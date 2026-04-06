@@ -1359,7 +1359,7 @@ END</div>
         <div class="setting-row" style="flex-wrap:wrap;gap:8px">
           <div>
             <div class="setting-label" data-zh="傳入速率 (Hz)" data-en="Data Rate (Hz)">傳入速率 (Hz)</div>
-            <div class="setting-desc" data-zh="ESP32 每秒發送封包次數（預設 5）" data-en="ESP32 packets per second sent (default 5)">ESP32 每秒發送封包次數（預設 5）</div>
+            <div class="setting-desc" data-zh="ESP32 每秒發送封包次數（預設 30）" data-en="ESP32 packets per second sent (default 30)">ESP32 每秒發送封包次數（預設 30）</div>
  </div>
           <div style="display:flex;align-items:center;gap:8px">
             <input type="range" class="r-input" id="sl_data_rate" min="1" max="50" step="1" value="5">
@@ -1693,11 +1693,11 @@ const CFG = {
   rest_hr:  70,    // 靜息心率 BPM（fallback，通常由 BASELINE 覆蓋）
   max_hr:  120,    // 最大心率 BPM（S_HR 上限，PDF 公式）
   calm_resp: 14,   // 靜息呼吸率 RPM（fallback）
-  hr_sens: 50,           // HR 靈敏度：高於基準 N% → S_HR = 100（舊參數保留相容）
+  hr_sens: 50,           // 已廢棄，保留避免舊存檔報錯
   resp_stress_mult: 1.25, // stressResp = baseResp × 此倍率（PDF: 1.25）
   calib: 60,
   gsr_thresh: 15,
-  data_rate: 30,
+  data_rate: 5,
   chart_rate: 10,
 };
 
@@ -2797,15 +2797,11 @@ function setCtrlMode(mode) {
   const webCtrl = document.getElementById('cpWebCtrl');
   const espHints = document.getElementById('cpEspHints');
   const statusTag = document.getElementById('cpStatus');
-  const hints = null; // statusBtnHints removed
-  const btnCtrl = document.getElementById('btnCtrl');
-
   if (mode === 'web') {
     espBtn.classList.remove('active'); webBtn.classList.add('active');
     webCtrl.style.display = 'flex';
     espHints.style.display = 'none';
     statusTag.innerHTML = '<span class="cp-mode-tag web">網頁</span>網頁 UI 送指令至 ESP32';
-    if (hints) hints.innerHTML = '<span style="color:var(--purple)">網頁控制中 — BTN1/BTN2 由此操作</span>';
     document.getElementById('cpCalibSec').textContent = CFG.calib;
     cpSyncStateFromPhase();
   } else {
@@ -2813,8 +2809,6 @@ function setCtrlMode(mode) {
     webCtrl.style.display = 'none';
     espHints.style.display = 'block';
     statusTag.innerHTML = '<span class="cp-mode-tag esp">ESP32</span>實體 BTN1/BTN2 主控';
-    if (hints) hints.innerHTML = '<span>BTN1 = 開機/校正/暫停</span><span style="margin-left:12px">BTN2 = 開始量測/停止</span>';
-    // cancel any ongoing web-ctrl calibration timer
     clearInterval(_ctrlCalibInterval);
   }
 }
@@ -3147,8 +3141,7 @@ function _startDemoDataStream() {
   }, 33); // ~30 fps
 }
 
-function startDemoCalib() {} // kept for compatibility but not used directly
-function startDemoRun() {}
+
 function stopDemo() {
   clearInterval(_demoInterval);
   clearInterval(_calibInterval);
@@ -4048,11 +4041,10 @@ document.getElementById('btnSave').addEventListener('click', () => {
   CFG.w_hr         = raw_hr;
   CFG.w_gsr        = raw_gsr;
   CFG.w_resp       = raw_resp;
-  CFG.hr_sens           = parseFloat(document.getElementById('cfg_hr_sens').value)          || 50;
   CFG.resp_stress_mult  = parseFloat(document.getElementById('cfg_resp_stress_mult').value)  || 1.25;
   CFG.calib        = parseInt(document.getElementById('cfg_calib').value)          || 10;
   CFG.gsr_thresh   = parseFloat(document.getElementById('cfg_gsr_thresh').value)   || 15;
-  CFG.data_rate    = parseInt(document.getElementById('cfg_data_rate').value)       || 30;
+  CFG.data_rate    = parseInt(document.getElementById("cfg_data_rate").value) || 5;
 
   // 更新公式顯示
   document.getElementById('fw_hr').textContent   = CFG.w_hr.toFixed(2);
@@ -4070,9 +4062,8 @@ document.getElementById('btnSave').addEventListener('click', () => {
     deviceWrite(`SET_W_GSR=${CFG.w_gsr.toFixed(3)}`);
     deviceWrite(`SET_W_RESP=${CFG.w_resp.toFixed(3)}`);
     deviceWrite(`SET_CALIB=${CFG.calib}`);
-    deviceWrite(`SET_HR_SENS=${CFG.hr_sens}`);
     deviceWrite(`SET_RESP_STRESS_MULT=${CFG.resp_stress_mult}`);
-    deviceWrite(`SET_DATA_RATE=${CFG.data_rate}`);
+    deviceWrite(`SET_RATE=${CFG.data_rate}`);
   }
 
   const btn = document.getElementById('btnSave');
