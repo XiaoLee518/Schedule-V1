@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ESP32 BioMonitor v2</title>
+<title>ESP32 BioMonitor v16</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
@@ -565,26 +565,26 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
   <div class="sidebar-logo">
     <div class="brand">ESP32 v2</div>
     <div class="name">BioMonitor</div>
-  </div>
+ </div>
   <div class="nav-list">
     <button class="nav-item active" data-page="stress" data-zh="壓力監測" data-en="Live Monitor">壓力監測</button>
     <button class="nav-item" data-page="analysis" data-zh="數據中心" data-en="Data Center">數據中心</button>
     <button class="nav-item" data-page="manual" data-zh="實驗手冊" data-en="Manual">實驗手冊</button>
     <button class="nav-item" data-page="settings" data-zh="參數設定" data-en="Settings">參數設定</button>
-  </div>
+ </div>
   <div style="padding:8px 8px 0">
-    <button class="btn" id="btnLang" style="width:100%;font-family:var(--mono);font-size:.72rem;letter-spacing:1px">🌐 EN</button>
-  </div>
+    <button class="btn" id="btnLang" style="width:100%;font-family:var(--mono);font-size:.72rem;letter-spacing:1px">EN</button>
+ </div>
   <div class="sidebar-footer">
     <div class="ble-row" style="margin-bottom:6px">
       <div class="ble-dot" id="bleDot"></div>
       <span id="bleText">BLE 未連線</span>
-    </div>
+ </div>
     <div class="ble-row">
       <div class="ble-dot" id="usbDot"></div>
       <span id="usbText">USB 未連線</span>
-    </div>
-  </div>
+ </div>
+ </div>
 </div>
 
 <!-- Main -->
@@ -605,8 +605,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
       <button class="btn hidden" id="btnStop">Stop</button>
       <button class="btn hidden" id="btnPause">Pause</button>
       <button class="btn hidden" id="btnExportCsv">CSV</button>
-    </div>
-  </div>
+ </div>
+ </div>
 
   <div class="page-body">
 
@@ -617,37 +617,37 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
         <div>
           <div id="statusMainText" style="font-family:var(--mono);font-size:.9rem;font-weight:600;color:var(--text)">閒置中 — 等待 ESP32 操作</div>
           <div id="statusSubText" style="font-family:var(--mono);font-size:.68rem;color:var(--text3);margin-top:2px"></div>
-        </div>
-      </div>
-    </div>
+ </div>
+ </div>
+ </div>
     <div class="card">
       <div class="timer-row">
         <div class="timer-block">
           <div class="timer-label">elapsed</div>
           <div class="timer-value" id="mainTimer">00:00</div>
-        </div>
+ </div>
         <div class="timer-sep"></div>
         <div class="timer-block">
           <div class="timer-label">phase</div>
           <div id="phaseText" style="font-size:.84rem;color:var(--text2)">等待校正...</div>
-        </div>
+ </div>
         <div class="timer-sep"></div>
         <div class="timer-block">
           <div class="timer-label">data points</div>
           <div class="timer-value" id="dataCount" style="font-size:1.4rem">0</div>
-        </div>
+ </div>
         <div class="timer-sep"></div>
         <div class="timer-block">
           <div class="timer-label">sample rate</div>
           <div style="font-family:var(--mono);font-size:.88rem;color:var(--text2)" id="srDisplay">-- Hz</div>
-        </div>
+ </div>
         <div class="timer-sep"></div>
         <div class="timer-block">
           <div class="timer-label">calib time</div>
           <div style="font-family:var(--mono);font-size:.88rem;color:var(--text2)" id="calibTime">--s</div>
-        </div>
-      </div>
-    </div>
+ </div>
+ </div>
+ </div>
 
     <!-- Overview chart -->
     <div class="card">
@@ -659,11 +659,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
             <div class="leg"><div class="leg-dot" style="background:var(--gsr)"></div>GSR</div>
             <div class="leg"><div class="leg-dot" style="background:var(--rr)"></div>Resp</div>
             <div class="leg"><div class="leg-dot" style="background:rgba(242,102,106,.25);border:1px solid var(--hr)"></div>校正區間</div>
-          </div>
-        </div>
+ </div>
+ </div>
         <div class="chart-wrap h200"><canvas id="cOverview"></canvas></div>
-      </div>
-    </div>
+ </div>
+ </div>
 
     <!-- Stress gauge -->
     <div class="card">
@@ -673,18 +673,18 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
           <div>
             <div class="gauge-score" id="stressScore">--</div>
             <div class="gauge-level" id="stressLevel">--</div>
-          </div>
+ </div>
           <div class="gauge-detail">
             <div class="gauge-track">
               <div class="gauge-fill" id="gaugeFill" style="width:0%"></div>
               <div class="gauge-needle" id="gaugeNeedle" style="left:0%"></div>
-            </div>
+ </div>
             <div class="gauge-ticks"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
             <div class="gauge-formula">Score = S_HR×<span id="fw_hr">0.40</span> + S_GSR×<span id="fw_gsr">0.20</span> + S_RR×<span id="fw_resp">0.40</span>（由 ESP32 計算後回傳）</div>
-          </div>
-        </div>
-      </div>
-    </div>
+ </div>
+ </div>
+ </div>
+ </div>
 
     <!-- Three metric cards -->
     <div class="metrics-row">
@@ -694,20 +694,20 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
         <div class="metric-head">
           <span class="metric-name" style="color:var(--hr)">Heart Rate</span>
           <span class="metric-unit">BPM</span>
-        </div>
+ </div>
         <div class="metric-body">
           <div class="val-pair">
             <div class="vg">
               <div class="vl">current BPM</div>
               <div class="vn" style="color:var(--hr)" id="curHR">--</div>
               <div class="vr">raw: <span id="curRawHR">--</span></div>
-            </div>
+ </div>
             <div class="vg">
               <div class="vl">baseline avg</div>
               <div class="vn" id="baseHR">--</div>
               <div class="vr">raw: <span id="baseRawHR">--</span></div>
-            </div>
-          </div>
+ </div>
+ </div>
           <div class="chart-wrap h120"><canvas id="cLiveHR"></canvas></div>
           <table class="st">
             <thead><tr><th>基準值</th><th>當前均值</th><th>最大</th><th>最小</th><th>點數</th><th>波峰</th></tr></thead>
@@ -715,30 +715,30 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
               <td id="s_hr_base">--</td><td class="hl" id="s_hr_avg">--</td>
               <td id="s_hr_max">--</td><td id="s_hr_min">--</td>
               <td id="s_hr_cnt">--</td><td id="s_hr_pk">--</td>
-            </tr></tbody>
-          </table>
-        </div>
-      </div>
+ </tr></tbody>
+ </table>
+ </div>
+ </div>
 
       <!-- GSR -->
       <div class="metric-card">
         <div class="metric-head">
           <span class="metric-name" style="color:var(--gsr)">GSR</span>
           <span class="metric-unit">raw ADC</span>
-        </div>
+ </div>
         <div class="metric-body">
           <div class="val-pair">
             <div class="vg">
               <div class="vl">current</div>
               <div class="vn" style="color:var(--gsr)" id="curGSR">--</div>
               <div class="vr">change: <span id="gsrChange">--</span></div>
-            </div>
+ </div>
             <div class="vg">
               <div class="vl">baseline</div>
               <div class="vn" id="baseGSR">--</div>
               <div class="vr">threshold +15%</div>
-            </div>
-          </div>
+ </div>
+ </div>
           <div class="chart-wrap h120"><canvas id="cLiveGSR"></canvas></div>
           <div class="gsr-alert" id="gsrAlert"></div>
           <table class="st">
@@ -747,30 +747,30 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
               <td id="s_gsr_base">--</td><td class="hl" id="s_gsr_avg">--</td>
               <td id="s_gsr_max">--</td><td id="s_gsr_min">--</td>
               <td id="s_gsr_cnt">--</td><td id="s_gsr_trig">0</td>
-            </tr></tbody>
-          </table>
-        </div>
-      </div>
+ </tr></tbody>
+ </table>
+ </div>
+ </div>
 
       <!-- Resp -->
       <div class="metric-card">
         <div class="metric-head">
           <span class="metric-name" style="color:var(--rr)">Respiration</span>
           <span class="metric-unit">RPM</span>
-        </div>
+ </div>
         <div class="metric-body">
           <div class="val-pair">
             <div class="vg">
               <div class="vl">current RPM</div>
               <div class="vn" style="color:var(--rr)" id="curRR">--</div>
               <div class="vr">raw: <span id="curRawRR">--</span></div>
-            </div>
+ </div>
             <div class="vg">
               <div class="vl">baseline avg</div>
               <div class="vn" id="baseRR">--</div>
               <div class="vr">raw: <span id="baseRawRR">--</span></div>
-            </div>
-          </div>
+ </div>
+ </div>
           <div class="chart-wrap h120"><canvas id="cLiveRR"></canvas></div>
           <table class="st">
             <thead><tr><th>基準值</th><th>當前均值</th><th>最大</th><th>最小</th><th>點數</th><th>波峰</th></tr></thead>
@@ -778,30 +778,30 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
               <td id="s_rr_base">--</td><td class="hl" id="s_rr_avg">--</td>
               <td id="s_rr_max">--</td><td id="s_rr_min">--</td>
               <td id="s_rr_cnt">--</td><td id="s_rr_pk">--</td>
-            </tr></tbody>
-          </table>
-        </div>
-      </div>
+ </tr></tbody>
+ </table>
+ </div>
+ </div>
 
-    </div>
+ </div>
 
     <!-- Raw log -->
     <div class="card">
       <div class="metric-head" style="padding:9px 15px">
         <span class="metric-name">原始數據紀錄</span>
         <span id="logCount" style="font-family:var(--mono);font-size:.68rem;color:var(--text3)">0 rows</span>
-      </div>
+ </div>
       <div class="log-wrap">
         <table class="lt">
           <thead><tr>
             <th>Time (s)</th><th>GSR raw</th><th>HR raw</th><th>Resp raw</th><th>BPM</th><th>RPM</th><th>Score</th>
-          </tr></thead>
+ </tr></thead>
           <tbody id="liveLogBody"></tbody>
-        </table>
-      </div>
-    </div>
+ </table>
+ </div>
+ </div>
 
-  </div>
+ </div>
 </div>
 
 <!-- ==================== 數據中心 ==================== -->
@@ -810,16 +810,16 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
     <span class="page-title" data-zh="數據中心" data-en="Data Center">數據中心 / Analysis</span>
     <div class="page-actions">
       <span id="anaFileName" style="font-family:var(--mono);font-size:.7rem;color:var(--text3)"></span>
-    </div>
-  </div>
+ </div>
+ </div>
 
   <div class="sub-tabs">
     <button class="sub-tab active" data-subtab="summary">概覽</button>
     <button class="sub-tab" data-subtab="advanced">進階分析</button>
     <button class="sub-tab" data-subtab="compare">數據比較</button>
-    <button class="sub-tab" data-subtab="report">📄 報告</button>
-    <button class="sub-tab" data-subtab="playback">🎬 回放</button>
-  </div>
+    <button class="sub-tab" data-subtab="report">報告</button>
+    <button class="sub-tab" data-subtab="playback">回放</button>
+ </div>
 
   <div class="page-body">
 
@@ -827,7 +827,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
     <div id="subtab-summary" class="sub-page active">
       <div id="anaEmpty" style="padding:36px;text-align:center;color:var(--text3);font-size:.84rem">
         尚無數據。請先進行測量，或從上方匯入 CSV 檔案。
-      </div>
+ </div>
       <div id="anaContent" class="hidden">
 
         <!-- 基準值 -->
@@ -835,12 +835,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
           <div class="chart-section">
             <div class="chart-header">
               <span class="chart-title">靜息基準值（由 ESP32 校正後傳送）</span>
-            </div>
+ </div>
             <div id="anaBaselineInfo" style="display:flex;gap:20px;padding:4px 0;font-family:var(--mono);font-size:.76rem;flex-wrap:wrap">
               <span style="color:var(--text3)">尚無基準值</span>
-            </div>
-          </div>
-        </div>
+ </div>
+ </div>
+ </div>
 
         <!-- ★ 全程緊張指數（最重要的圖，放最上面） -->
         <div class="card" style="margin-bottom:13px;border-color:rgba(155,127,232,.4)">
@@ -850,48 +850,48 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
                 <span class="chart-title" style="color:var(--purple)">全程緊張指數 / Full-Session Stress Index</span>
                 <div style="font-family:var(--mono);font-size:.63rem;color:var(--text3);margin-top:3px">
                   來源：ESP32 即時計算值 | 紅虛線 = 緊張閾值 60
-                </div>
-              </div>
+ </div>
+ </div>
               <div id="anaStressStats" style="font-family:var(--mono);font-size:.7rem;color:var(--text3);text-align:right"></div>
-            </div>
+ </div>
             <!-- 色帶說明 -->
             <div style="display:flex;gap:14px;margin-bottom:8px;flex-wrap:wrap">
               <span style="font-family:var(--mono);font-size:.62rem;color:#3ecf8e">■ 0–30 放鬆</span>
               <span style="font-family:var(--mono);font-size:.62rem;color:#f0b429">■ 30–60 輕度</span>
               <span style="font-family:var(--mono);font-size:.62rem;color:#f2666a">■ 60–80 中度緊張</span>
               <span style="font-family:var(--mono);font-size:.62rem;color:#c0392b">■ 80+ 高度緊張</span>
-            </div>
+ </div>
             <div class="chart-wrap h200"><canvas id="cAnaStressFull"></canvas></div>
-          </div>
-        </div>
+ </div>
+ </div>
 
         <!-- 三訊號 -->
         <div class="card" style="margin-bottom:13px">
           <div class="chart-section">
             <div class="chart-header"><span class="chart-title">心率 HR raw（完整紀錄）</span></div>
             <div class="chart-wrap h150"><canvas id="cAnaHR"></canvas></div>
-          </div>
-        </div>
+ </div>
+ </div>
         <div class="card" style="margin-bottom:13px">
           <div class="chart-section">
             <div class="chart-header"><span class="chart-title">膚電 GSR raw（完整紀錄）</span></div>
             <div class="chart-wrap h150"><canvas id="cAnaGSR"></canvas></div>
-          </div>
-        </div>
+ </div>
+ </div>
         <div class="card" style="margin-bottom:13px">
           <div class="chart-section">
             <div class="chart-header"><span class="chart-title">呼吸 Resp raw（完整紀錄）</span></div>
             <div class="chart-wrap h150"><canvas id="cAnaRR"></canvas></div>
-          </div>
-        </div>
+ </div>
+ </div>
 
         <!-- 異常偵測 -->
         <div class="card" style="padding:15px">
           <div class="metric-name" style="margin-bottom:11px">異常區間偵測</div>
           <div id="anomalyList"></div>
-        </div>
-      </div>
-    </div>
+ </div>
+ </div>
+ </div>
 
     <!-- Advanced -->
     <div id="subtab-advanced" class="sub-page">
@@ -902,7 +902,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
           <span style="color:var(--text3);font-size:.8rem">—</span>
           <input type="number" class="t-input" id="adv_ce" value="10"> s
           <button class="btn btn-primary" id="btnRecalc">重新計算</button>
-        </div>
+ </div>
         <div class="tool-row">
           <span class="tool-label">HR 權重</span>
           <input type="range" class="r-input" id="adv_whr" min="0" max="1" step=".05" value=".4">
@@ -913,31 +913,31 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
           <span class="tool-label" style="margin-left:10px">RR 權重</span>
           <input type="range" class="r-input" id="adv_wrr" min="0" max="1" step=".05" value=".4">
           <span class="r-val" id="adv_wrr_v">0.40</span>
-        </div>
-      </div>
+ </div>
+ </div>
       <div class="card" style="margin-bottom:13px">
         <div class="chart-section">
           <div class="chart-header">
             <span class="chart-title">進階圖表</span>
             <div style="display:flex;gap:6px">
               <button class="btn" id="btnAddLine" style="padding:3px 8px;font-size:.68rem">+ 輔助線</button>
-              <button class="btn" id="btnZoomIn"  style="padding:3px 8px;font-size:.68rem">🔍+</button>
-              <button class="btn" id="btnZoomOut" style="padding:3px 8px;font-size:.68rem">🔍−</button>
+              <button class="btn" id="btnZoomIn"  style="padding:3px 8px;font-size:.68rem">[+]</button>
+              <button class="btn" id="btnZoomOut" style="padding:3px 8px;font-size:.68rem">[-]</button>
               <button class="btn" id="btnZoomReset" style="padding:3px 8px;font-size:.68rem">重置</button>
-            </div>
-          </div>
-          <div style="font-family:var(--mono);font-size:.6rem;color:var(--text3);margin-bottom:4px" id="advZoomHint">💡 滾輪縮放 · 拖拉平移時間軸</div>
+ </div>
+ </div>
+          <div style="font-family:var(--mono);font-size:.6rem;color:var(--text3);margin-bottom:4px" id="advZoomHint">滾輪縮放 · 拖拉平移時間軸</div>
           <div class="chart-wrap h200"><canvas id="cAdvanced"></canvas></div>
-        </div>
-      </div>
+ </div>
+ </div>
       <div class="card" style="padding:15px">
         <div class="metric-name" style="margin-bottom:11px">統計摘要</div>
         <table class="st" id="advStatsTable">
           <thead><tr><th>指標</th><th>基準值</th><th>均值</th><th>最大</th><th>最小</th><th>標準差</th><th>波峰數</th><th>BPM/RPM</th></tr></thead>
           <tbody id="advStatsBody"></tbody>
-        </table>
-      </div>
-    </div>
+ </table>
+ </div>
+ </div>
 
     <!-- Compare -->
     <div id="subtab-compare" class="sub-page">
@@ -947,8 +947,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
           <div style="display:flex;gap:7px">
             <button class="btn btn-primary" id="btnAddCompare">+ 新增 CSV</button>
             <button class="btn btn-danger" id="btnClearCompare">清除全部</button>
-          </div>
-        </div>
+ </div>
+ </div>
         <div id="compareFileList" style="font-family:var(--mono);font-size:.72rem;color:var(--text3);margin-bottom:10px;min-height:18px"></div>
         <!-- Auxiliary line controls -->
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
@@ -959,11 +959,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
             <option value="hr">HR</option>
             <option value="gsr">GSR</option>
             <option value="resp">Resp</option>
-          </select>
+ </select>
           <button class="btn" id="btnCmpAddLine" style="font-size:.72rem;padding:4px 9px">+ 加線</button>
           <button class="btn btn-danger" id="btnCmpClearLines" style="font-size:.72rem;padding:4px 9px">清輔助線</button>
-        </div>
-      </div>
+ </div>
+ </div>
 
       <!-- Stats table -->
       <div class="card" style="padding:14px 16px;margin-bottom:13px" id="cmpStatsCard">
@@ -974,11 +974,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
               <th>檔案</th><th>時長(s)</th>
               <th style="color:var(--purple)">Score均值</th><th style="color:var(--purple)">Score最大</th><th style="color:var(--purple)">事件(≥60)</th>
               <th style="color:var(--hr)">HR均值</th><th style="color:var(--gsr)">GSR均值</th><th style="color:var(--rr)">Resp均值</th>
-            </tr></thead>
+ </tr></thead>
             <tbody id="cmpStatsBody"></tbody>
-          </table>
-        </div>
-      </div>
+ </table>
+ </div>
+ </div>
 
       <!-- Score chart -->
       <div class="card" style="margin-bottom:13px">
@@ -986,39 +986,39 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
           <div class="chart-header">
             <span class="chart-title">壓力指數比較</span>
             <div id="cmpScoreLegend" class="legend"></div>
-          </div>
+ </div>
           <div class="chart-wrap h200"><canvas id="cCompareScore"></canvas></div>
-        </div>
-      </div>
+ </div>
+ </div>
       <!-- HR chart -->
       <div class="card" style="margin-bottom:13px">
         <div class="chart-section">
           <div class="chart-header"><span class="chart-title">HR raw 比較</span></div>
           <div class="chart-wrap h150"><canvas id="cCompareHR"></canvas></div>
-        </div>
-      </div>
+ </div>
+ </div>
       <!-- GSR chart -->
       <div class="card" style="margin-bottom:13px">
         <div class="chart-section">
           <div class="chart-header"><span class="chart-title">GSR raw 比較</span></div>
           <div class="chart-wrap h150"><canvas id="cCompareGSR"></canvas></div>
-        </div>
-      </div>
+ </div>
+ </div>
       <!-- Resp chart -->
       <div class="card" style="margin-bottom:13px">
         <div class="chart-section">
           <div class="chart-header"><span class="chart-title">Resp raw 比較</span></div>
           <div class="chart-wrap h150"><canvas id="cCompareResp"></canvas></div>
-        </div>
-      </div>
-    </div>
+ </div>
+ </div>
+ </div>
 
     <!-- Report -->
     <div id="subtab-report" class="sub-page">
       <div style="padding:12px 16px;display:flex;gap:8px;align-items:center;border-bottom:1px solid var(--line);background:var(--bg2)">
-        <button class="btn btn-primary" id="btnPrintReport">🖨 列印 / 儲存 PDF</button>
+        <button class="btn btn-primary" id="btnPrintReport">列印 / 儲存 PDF</button>
         <span style="font-family:var(--mono);font-size:.7rem;color:var(--text3)">使用瀏覽器「另存為 PDF」匯出 A4 報告</span>
-      </div>
+ </div>
       <div style="padding:20px;background:var(--bg);min-height:100%;overflow-x:auto">
         <!-- A4 report area -->
         <div id="reportPage" style="width:794px;min-height:1123px;background:#fff;color:#111;margin:0 auto;padding:44px 50px;font-family:'IBM Plex Sans',sans-serif;box-shadow:0 4px 40px rgba(0,0,0,.4);border-radius:4px">
@@ -1029,41 +1029,41 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
               <div>
                 <div style="font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:#888;font-family:'IBM Plex Mono',monospace;margin-bottom:3px">ESP32 BioMonitor — Analysis Report</div>
                 <div style="font-size:1.5rem;font-weight:700;color:#1a1a2e">生理訊號壓力監測報告</div>
-              </div>
+ </div>
               <div style="text-align:right;font-family:'IBM Plex Mono',monospace;font-size:.66rem;color:#888;line-height:1.7">
                 <div id="rpt_date"></div>
                 <div id="rpt_duration"></div>
                 <div id="rpt_pts"></div>
-              </div>
-            </div>
-          </div>
+ </div>
+ </div>
+ </div>
 
           <!-- Baseline + 統計 並排 -->
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px">
             <div>
               <div style="font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:#888;font-family:'IBM Plex Mono',monospace;margin-bottom:7px;border-bottom:1px solid #eee;padding-bottom:3px">靜息基準值 / Baseline</div>
               <div id="rpt_baseline" style="display:flex;gap:10px;flex-wrap:wrap"></div>
-            </div>
+ </div>
             <div>
               <div style="font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:#888;font-family:'IBM Plex Mono',monospace;margin-bottom:7px;border-bottom:1px solid #eee;padding-bottom:3px">緊張指數統計 / Stress Statistics</div>
               <div id="rpt_stressStats" style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px"></div>
-            </div>
-          </div>
+ </div>
+ </div>
 
           <!-- 計算公式 -->
           <div style="margin-bottom:14px;background:#f8f9ff;border:1px solid #e0e4f0;border-radius:4px;padding:7px 12px;font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:#333">
             <span style="color:#999;margin-right:8px">公式:</span>
             <span id="rpt_formula"></span>
-          </div>
+ </div>
 
           <!-- ★ 全程緊張指數走勢（大圖，這是報告重點） -->
           <div style="margin-bottom:16px;border:1px solid #e8e8e8;border-radius:4px;padding:12px">
             <div style="font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:#555;font-family:'IBM Plex Mono',monospace;margin-bottom:3px">
               全程緊張指數走勢 / Full-session Stress Index Timeline
-            </div>
+ </div>
             <div style="font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:#aaa;margin-bottom:8px">
               紅色虛線 = 緊張閾值 60 | 橘色區塊 = 偵測到緊張事件
-            </div>
+ </div>
             <div style="height:180px;position:relative"><canvas id="cRptStress"></canvas></div>
             <!-- 緊張等級色帶說明 -->
             <div style="display:flex;gap:16px;margin-top:6px;font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:#888">
@@ -1071,42 +1071,42 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
               <span><span style="color:#f0b429">■</span> 30–60 輕度緊張</span>
               <span><span style="color:#f2666a">■</span> 60–80 中度緊張</span>
               <span><span style="color:#c0392b">■</span> 80–100 高度緊張</span>
-            </div>
-          </div>
+ </div>
+ </div>
 
           <!-- 三訊號並排 -->
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
             <div style="border:1px solid #eee;border-radius:4px;padding:10px">
               <div style="font-size:.56rem;letter-spacing:1px;text-transform:uppercase;color:#aaa;font-family:'IBM Plex Mono',monospace;margin-bottom:6px">心率 HR raw</div>
               <div style="height:100px;position:relative"><canvas id="cRptHR"></canvas></div>
-            </div>
+ </div>
             <div style="border:1px solid #eee;border-radius:4px;padding:10px">
               <div style="font-size:.56rem;letter-spacing:1px;text-transform:uppercase;color:#aaa;font-family:'IBM Plex Mono',monospace;margin-bottom:6px">膚電 GSR raw</div>
               <div style="height:100px;position:relative"><canvas id="cRptGSR"></canvas></div>
-            </div>
+ </div>
             <div style="border:1px solid #eee;border-radius:4px;padding:10px">
               <div style="font-size:.56rem;letter-spacing:1px;text-transform:uppercase;color:#aaa;font-family:'IBM Plex Mono',monospace;margin-bottom:6px">呼吸 Resp raw</div>
               <div style="height:100px;position:relative"><canvas id="cRptResp"></canvas></div>
-            </div>
-          </div>
+ </div>
+ </div>
 
           <!-- 緊張事件表格 -->
           <div style="margin-bottom:20px">
             <div style="font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:#888;font-family:'IBM Plex Mono',monospace;margin-bottom:7px;border-bottom:1px solid #eee;padding-bottom:3px">
               緊張事件偵測 / Stress Events (Score ≥ 60)
-            </div>
+ </div>
             <div id="rpt_events"></div>
-          </div>
+ </div>
 
           <!-- Footer -->
           <div style="border-top:1px solid #eee;padding-top:10px;font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:#ccc;display:flex;justify-content:space-between">
             <span>ESP32 BioMonitor — Auto-generated Report</span>
             <span id="rpt_footer_date"></span>
-          </div>
+ </div>
 
-        </div><!-- reportPage -->
-      </div>
-    </div>
+ </div><!-- reportPage -->
+ </div>
+ </div>
 
     <!-- ==================== 回放子頁面 ==================== -->
     <div id="subtab-playback" class="sub-page">
@@ -1115,64 +1115,64 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
         <!-- 頂部說明 + 動作 -->
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
           <div>
-            <div style="font-size:.82rem;font-weight:700;color:var(--text)">🎬 錄影回放</div>
+            <div style="font-size:.82rem;font-weight:700;color:var(--text)"> 錄影回放</div>
             <div style="font-family:var(--mono);font-size:.62rem;color:var(--text3);margin-top:3px">自動保存最近 5 次量測錄影 · 點擊緊張時刻直接跳轉</div>
-          </div>
+ </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn" id="pbRefreshBtn" style="font-size:.72rem">🔄 重新整理</button>
-            <button class="btn" id="pbClearAllBtn" style="font-size:.72rem;border-color:var(--red);color:var(--red)">🗑 清除全部</button>
-          </div>
-        </div>
+            <button class="btn" id="pbRefreshBtn" style="font-size:.72rem">重新整理</button>
+            <button class="btn" id="pbClearAllBtn" style="font-size:.72rem;border-color:var(--red);color:var(--red)">清除全部</button>
+ </div>
+ </div>
 
         <!-- 目前錄影狀態 -->
         <div id="pbCurrentSession" style="display:none;background:rgba(62,207,142,.07);border:1px solid rgba(62,207,142,.25);border-radius:8px;padding:12px 14px">
-          <div style="font-family:var(--mono);font-size:.7rem;color:var(--green);font-weight:700;margin-bottom:8px">📹 目前量測錄影</div>
+          <div style="font-family:var(--mono);font-size:.7rem;color:var(--green);font-weight:700;margin-bottom:8px">目前量測錄影</div>
           <div id="pbCurrentInfo" style="font-family:var(--mono);font-size:.65rem;color:var(--text2);margin-bottom:8px"></div>
           <div id="pbCurrentEvents" style="display:flex;flex-wrap:wrap;gap:6px"></div>
           <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-            <button class="btn" id="pbCurrentPlayBtn" style="font-size:.72rem;border-color:var(--green);color:var(--green)">▶ 播放</button>
-            <button class="btn" id="pbCurrentDlBtn"   style="font-size:.72rem">⬇ 下載完整錄影</button>
-            <button class="btn" id="pbCurrentSaveBtn" style="font-size:.72rem;border-color:var(--accent);color:var(--accent)">💾 存入記錄</button>
-          </div>
-        </div>
+            <button class="btn" id="pbCurrentPlayBtn" style="font-size:.72rem;border-color:var(--green);color:var(--green)">播放</button>
+            <button class="btn" id="pbCurrentDlBtn"   style="font-size:.72rem">下載完整錄影</button>
+            <button class="btn" id="pbCurrentSaveBtn" style="font-size:.72rem;border-color:var(--accent);color:var(--accent)">存入記錄</button>
+ </div>
+ </div>
 
         <!-- 無錄影提示 -->
         <div id="pbNoSession" style="text-align:center;padding:32px;color:var(--text3);font-family:var(--mono);font-size:.72rem">
           尚無錄影資料<br><span style="font-size:.62rem;margin-top:4px;display:block">開始量測並啟用鏡頭後，錄影將自動儲存在此</span>
-        </div>
+ </div>
 
         <!-- 歷史錄影列表 -->
         <div id="pbHistoryWrap" style="display:none">
-          <div style="font-family:var(--mono);font-size:.65rem;color:var(--text3);margin-bottom:8px;letter-spacing:.5px">📁 歷史記錄（最近 5 次）</div>
+          <div style="font-family:var(--mono);font-size:.65rem;color:var(--text3);margin-bottom:8px;letter-spacing:.5px">歷史記錄（最近 5 次）</div>
           <div id="pbHistoryList" style="display:flex;flex-direction:column;gap:8px"></div>
-        </div>
+ </div>
 
         <!-- 嵌入播放器 -->
         <div id="pbPlayerWrap" style="display:none;background:var(--bg2);border:1px solid var(--line);border-radius:10px;overflow:hidden">
           <div style="padding:10px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between">
             <div style="font-family:var(--mono);font-size:.72rem;font-weight:700;color:var(--text)" id="pbPlayerTitle">播放器</div>
             <button id="pbPlayerClose" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:1rem;padding:0">✕</button>
-          </div>
+ </div>
           <video id="pbInlineVideo" controls playsinline style="width:100%;max-height:320px;background:#000;display:block"></video>
           <!-- 緊張時刻時間軸 -->
           <div style="padding:12px 14px">
             <div style="font-family:var(--mono);font-size:.6rem;color:var(--text3);margin-bottom:6px">緊張事件時間軸（點擊跳轉）</div>
             <div id="pbInlineTimeline" style="position:relative;height:24px;background:var(--bg3);border-radius:4px;overflow:hidden;cursor:pointer;margin-bottom:8px">
               <div id="pbInlineProgress" style="position:absolute;left:0;top:0;height:100%;background:var(--accent);opacity:.15;width:0%;transition:width .2s"></div>
-            </div>
+ </div>
             <div id="pbInlineEvents" style="display:flex;flex-wrap:wrap;gap:5px"></div>
-          </div>
+ </div>
           <!-- 緊張片段列表 -->
           <div style="padding:0 14px 14px">
             <div style="font-family:var(--mono);font-size:.6rem;color:var(--text3);margin-bottom:6px">緊張時刻片段（逐段跳轉 / 下載）</div>
             <div id="pbInlineClips" style="display:flex;flex-direction:column;gap:6px"></div>
-          </div>
-        </div>
+ </div>
+ </div>
 
-      </div>
-    </div>
+ </div>
+ </div>
 
-  </div>
+ </div>
 </div>
 
 <!-- ==================== 實驗手冊 ==================== -->
@@ -1215,8 +1215,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);display:flex
 - 壓力分數由 ESP32 即時計算後回傳，確保基準線精確性。
 - 若中途需暫停，可按 Button 1 或網頁「暫停接收」按鈕。</div>
           <button class="copy-btn" onclick="doCopy('tpl1',this)">複製</button>
-        </div>
-      </div>
+ </div>
+ </div>
 
       <div style="margin-bottom:24px">
         <div class="manual-h1">演算法說明</div>
@@ -1246,18 +1246,18 @@ Score  = S_HR*w_hr + S_GSR*w_gsr + S_Resp*w_resp</div>
             <tr><td>3. 量測</td><td>自動 / BLE START</td><td>每秒發送 DATA 封包，波峰偵測持續執行</td></tr>
             <tr><td>4. 暫停</td><td>BTN1 / BLE PAUSE</td><td>停止 BLE 發送，背景波峰偵測繼續</td></tr>
             <tr><td>5. 停止</td><td>BTN2 / BLE STOP</td><td>發送 END 封包，前端自動跳轉數據中心</td></tr>
-          </tbody>
-        </table>
+ </tbody>
+ </table>
 
         <div class="manual-h2">5. BLE 封包格式</div>
         <div class="manual-formula">DATA,&lt;sec&gt;,&lt;gsrRaw&gt;,&lt;hrRaw&gt;,&lt;respRaw&gt;,&lt;BPM&gt;,&lt;RPM&gt;,&lt;Score&gt;
 BASELINE,&lt;baseGSR&gt;,&lt;baseHR&gt;,&lt;baseResp&gt;
 STATUS,&lt;CALIBRATING|RUNNING|PAUSED|STOPPED&gt;
 END</div>
-      </div>
+ </div>
 
-    </div>
-  </div>
+ </div>
+ </div>
 </div>
 
 <!-- ==================== 參數設定 ==================== -->
@@ -1266,8 +1266,8 @@ END</div>
     <span class="page-title">參數設定 / Settings</span>
     <div class="page-actions">
       <button class="btn btn-success" id="btnSave">儲存並同步 ESP32</button>
-    </div>
-  </div>
+ </div>
+ </div>
   <div class="page-body">
     <div class="settings-body" style="max-width:100%">
 
@@ -1279,39 +1279,39 @@ END</div>
           <div style="display:flex;align-items:center;gap:8px">
             <input type="range" class="r-input" id="sl_w_hr" min="0" max="1" step=".05" value=".4">
             <input type="number" class="s-input" id="cfg_w_hr" value="0.4" step=".05" min="0" max="1" style="width:70px">
-          </div>
-        </div>
+ </div>
+ </div>
         <div class="setting-row" style="flex-wrap:wrap;gap:8px">
           <div><div class="setting-label">GSR 權重</div><div class="setting-desc">膚電佔壓力指數比例</div></div>
           <div style="display:flex;align-items:center;gap:8px">
             <input type="range" class="r-input" id="sl_w_gsr" min="0" max="1" step=".05" value=".2">
             <input type="number" class="s-input" id="cfg_w_gsr" value="0.2" step=".05" min="0" max="1" style="width:70px">
-          </div>
-        </div>
+ </div>
+ </div>
         <div class="setting-row" style="flex-wrap:wrap;gap:8px">
           <div><div class="setting-label">Resp 權重</div><div class="setting-desc">呼吸佔壓力指數比例</div></div>
           <div style="display:flex;align-items:center;gap:8px">
             <input type="range" class="r-input" id="sl_w_resp" min="0" max="1" step=".05" value=".4">
             <input type="number" class="s-input" id="cfg_w_resp" value="0.4" step=".05" min="0" max="1" style="width:70px">
-          </div>
-        </div>
+ </div>
+ </div>
         <div class="weight-total wt-ok" id="weightTotal">總和：1.00 ✓</div>
-      </div>
+ </div>
 
       <div class="settings-section">
         <div class="settings-h">心率參數</div>
         <div style="background:var(--bg3);border:1px solid var(--line);border-radius:4px;padding:10px 14px;font-size:.75rem;color:var(--text3);font-family:var(--mono);margin-bottom:6px">
           restHR 自動由校正基準值帶入（BASELINE / 60 s）<br>
           公式：S_HR = (BPM − restHR) / (restHR × HR靈敏度%) × 100
-        </div>
+ </div>
         <div class="setting-row" style="flex-wrap:wrap;gap:8px">
           <div><div class="setting-label">HR 靈敏度 (%)</div><div class="setting-desc">高於基準幾 % → S_HR = 100（例：50 = 超出基準 50% 即滿分）</div></div>
           <div style="display:flex;align-items:center;gap:8px">
             <input type="range" class="r-input" id="sl_hr_sens" min="10" max="200" step="5" value="50">
             <input type="number" class="s-input" id="cfg_hr_sens" value="50" style="width:70px">
-          </div>
-        </div>
-      </div>
+ </div>
+ </div>
+ </div>
 
       <div class="settings-section">
         <div class="settings-h">呼吸參數</div>
@@ -1319,15 +1319,15 @@ END</div>
           calmResp = BASELINE 基準呼吸率（自動帶入）<br>
           stressResp = calmResp × 壓力倍率（預設 1.25）<br>
           S_Resp = (RPM − calmResp) / (stressResp − calmResp) × 100
-        </div>
+ </div>
         <div class="setting-row" style="flex-wrap:wrap;gap:8px">
           <div><div class="setting-label">Resp 壓力倍率</div><div class="setting-desc">stressResp = 基準 × 此值（達到此呼吸率 → S_Resp = 100）</div></div>
           <div style="display:flex;align-items:center;gap:8px">
             <input type="range" class="r-input" id="sl_resp_stress_mult" min="1.05" max="3.0" step="0.05" value="1.25">
             <input type="number" class="s-input" id="cfg_resp_stress_mult" value="1.25" step="0.05" min="1.05" max="3.0" style="width:70px">
-          </div>
-        </div>
-      </div>
+ </div>
+ </div>
+ </div>
 
       <div class="settings-section">
         <div class="settings-h">GSR 參數</div>
@@ -1336,9 +1336,9 @@ END</div>
           <div style="display:flex;align-items:center;gap:8px">
             <input type="range" class="r-input" id="sl_gsr_thresh" min="5" max="50" step="1" value="15">
             <input type="number" class="s-input" id="cfg_gsr_thresh" value="15" style="width:70px">
-          </div>
-        </div>
-      </div>
+ </div>
+ </div>
+ </div>
 
       <div class="settings-section">
         <div class="settings-h">系統參數</div>
@@ -1347,26 +1347,26 @@ END</div>
           <div style="display:flex;align-items:center;gap:8px">
             <input type="range" class="r-input" id="sl_calib" min="5" max="120" step="5" value="60">
             <input type="number" class="s-input" id="cfg_calib" value="60" style="width:70px">
-          </div>
-        </div>
-      </div>
+ </div>
+ </div>
+ </div>
 
       <div class="settings-section">
         <div class="settings-h" data-zh="封包傳入速率" data-en="Packet Rate">封包傳入速率</div>
         <div style="background:var(--bg3);border:1px solid var(--line);border-radius:4px;padding:10px 14px;font-size:.75rem;color:var(--text3);font-family:var(--mono);margin-bottom:6px">
           <span data-zh="每秒資料封包數（packets/s）。ESP32 最高約 50 Hz，建議 30。" data-en="Packets per second. ESP32 max ~50 Hz, recommended 30.">每秒資料封包數（packets/s）。ESP32 最高約 50 Hz，建議 30。</span>
-        </div>
+ </div>
         <div class="setting-row" style="flex-wrap:wrap;gap:8px">
           <div>
             <div class="setting-label" data-zh="傳入速率 (Hz)" data-en="Data Rate (Hz)">傳入速率 (Hz)</div>
-            <div class="setting-desc" data-zh="ESP32 每秒發送封包次數（預設 30）" data-en="ESP32 packets per second sent (default 30)">ESP32 每秒發送封包次數（預設 30）</div>
-          </div>
+            <div class="setting-desc" data-zh="ESP32 每秒發送封包次數（預設 5）" data-en="ESP32 packets per second sent (default 5)">ESP32 每秒發送封包次數（預設 5）</div>
+ </div>
           <div style="display:flex;align-items:center;gap:8px">
-            <input type="range" class="r-input" id="sl_data_rate" min="1" max="50" step="1" value="30">
-            <input type="number" class="s-input" id="cfg_data_rate" value="30" min="1" max="50" style="width:70px">
-          </div>
-        </div>
-      </div>
+            <input type="range" class="r-input" id="sl_data_rate" min="1" max="50" step="1" value="5">
+            <input type="number" class="s-input" id="cfg_data_rate" value="5" min="1" max="50" style="width:70px">
+ </div>
+ </div>
+ </div>
 
       <div class="settings-section">
         <div class="settings-h" data-zh="緊張判定閾值預覽" data-en="Stress Threshold Preview">緊張判定閾值預覽</div>
@@ -1376,11 +1376,11 @@ END</div>
           <div>S_Resp = (RPM − calmResp) / (calmResp × (<span id="prev_resp_stress_mult" style="color:var(--rr)">1.25</span> − 1)) × 100 &nbsp;<span style="color:var(--text3)">→ 100 當 RPM 達到基準 × 1.25</span></div>
           <div style="margin-top:6px;color:var(--accent)">緊張指數 Score = S_HR×<span id="prev_whr">0.40</span> + S_GSR×<span id="prev_wgsr">0.20</span> + S_Resp×<span id="prev_wrr">0.40</span></div>
           <div style="margin-top:4px;color:var(--text3)">LTI = Peak×0.4 + Avg×0.4 + 事件密度×0.2 &nbsp;（報告頁顯示）</div>
-        </div>
-      </div>
+ </div>
+ </div>
 
-    </div>
-  </div>
+ </div>
+ </div>
 </div>
 
 </div><!-- .main -->
@@ -1402,31 +1402,31 @@ END</div>
     <div class="modal-actions">
       <button class="btn" id="btnBleCancel">取消</button>
       <button class="btn btn-primary" id="btnBleScan">掃描裝置</button>
-    </div>
-  </div>
+ </div>
+ </div>
 </div>
 
 <!-- ==================== 清除資料確認 Modal ==================== -->
 <div class="modal-overlay" id="resetConfirmOverlay">
   <div class="modal-box" style="width:360px">
-    <div class="modal-title">🗑 清除量測資料</div>
+    <div class="modal-title">清除量測資料</div>
     <div class="modal-sub" style="margin-bottom:14px">請選擇清除範圍：</div>
     <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px">
       <div style="background:var(--bg3);border:1px solid rgba(62,207,142,.3);border-radius:6px;padding:12px 14px;font-size:.8rem;color:var(--text2)">
         <div style="font-weight:700;color:var(--green);margin-bottom:4px">保留基準值，重新量測</div>
         <div style="font-size:.72rem;color:var(--text3)">清除所有波形與分數資料，但保留校正階段取得的靜息基準值（HR / GSR / Resp），可直接再按「開始量測」。</div>
-      </div>
+ </div>
       <div style="background:var(--bg3);border:1px solid rgba(242,102,106,.3);border-radius:6px;padding:12px 14px;font-size:.8rem;color:var(--text2)">
         <div style="font-weight:700;color:var(--red);margin-bottom:4px">全部清除（含基準值）</div>
         <div style="font-size:.72rem;color:var(--text3)">清除所有資料，包含校正基準值，需重新執行完整校正流程。</div>
-      </div>
-    </div>
+ </div>
+ </div>
     <div class="modal-actions">
       <button class="btn" id="btnResetCancel">取消</button>
       <button class="btn btn-success" id="btnResetKeepBase">保留基準值</button>
       <button class="btn btn-danger" id="btnResetClearAll">全部清除</button>
-    </div>
-  </div>
+ </div>
+ </div>
 </div>
 
 <!-- ==================== 影片回放 Modal ==================== -->
@@ -1441,67 +1441,67 @@ END</div>
         <button class="btn btn-warning" id="btnDownloadClips" style="font-size:.72rem">下載緊張片段</button>
         <button class="btn" id="btnDownloadSession" style="font-size:.72rem">下載當次完整資料</button>
         <button class="btn btn-danger" id="btnPlaybackClose" style="font-size:.72rem">✕ 關閉</button>
-      </div>
-    </div>
+ </div>
+ </div>
 
     <!-- Video player -->
     <video id="playbackVideo" controls playsinline
       style="width:100%;border-radius:6px;background:#000;max-height:44vh;display:block">
       您的瀏覽器不支援 video 播放。
-    </video>
+ </video>
 
     <!-- Stress score timeline -->
     <div style="margin-top:13px">
       <div style="font-family:var(--mono);font-size:.62rem;color:var(--text3);margin-bottom:5px;letter-spacing:.4px" id="pbTimelineHint">
         緊張事件時間軸 — 點擊紅色標記跳轉至對應時段
-      </div>
+ </div>
       <div id="pbTimeline"
         style="position:relative;height:24px;background:var(--bg3);border-radius:5px;border:1px solid var(--line);overflow:visible;cursor:default">
-      </div>
-    </div>
+ </div>
+ </div>
 
     <!-- Event chips -->
     <div style="margin-top:10px">
       <div style="font-family:var(--mono);font-size:.62rem;color:var(--text3);margin-bottom:6px;letter-spacing:.4px" id="pbEventsHint">
         緊張事件（Score ≥ 60）— 點擊直接跳轉：
-      </div>
+ </div>
       <div id="pbEventList" style="display:flex;gap:6px;flex-wrap:wrap;min-height:20px"></div>
-    </div>
+ </div>
 
     <!-- Stress clips list -->
     <div style="margin-top:12px" id="pbClipsSection">
       <div style="font-family:var(--mono);font-size:.62rem;color:var(--text3);margin-bottom:6px;letter-spacing:.4px">
         緊張片段（可個別下載）：
-      </div>
+ </div>
       <div id="pbClipsList" style="display:flex;flex-direction:column;gap:5px"></div>
-    </div>
+ </div>
 
     <!-- Hint -->
     <div style="margin-top:10px;font-family:var(--mono);font-size:.6rem;color:var(--text3);line-height:1.6" id="pbHint">
-      💡 影片從<b style="color:var(--text2)">量測開始</b>的時刻對齊緊張指數時間軸。
+      影片從<b style="color:var(--text2)">量測開始</b>的時刻對齊緊張指數時間軸。
       若錄影比量測更早開始，系統已自動計算偏移量。
-    </div>
+ </div>
 
-  </div>
+ </div>
 </div>
 
 <!-- Demo Float Panel -->
 <!-- ==================== 網頁控制面板 ==================== -->
 <div id="ctrlPanel" class="hidden">
   <div id="ctrlPanelHead">
-    <span class="cp-title">🎛 網頁控制</span>
+    <span class="cp-title">網頁控制</span>
     <button id="ctrlPanelClose">✕</button>
-  </div>
+ </div>
   <div id="ctrlPanelBody">
     <!-- Authority toggle -->
     <div style="font-size:.62rem;color:var(--text3);margin-bottom:2px">主控權</div>
     <div class="cp-authority">
       <div class="cp-auth-btn active" id="cpAuthEsp" title="實體按鈕控制">ESP32 按鈕</div>
       <div class="cp-auth-btn" id="cpAuthWeb" title="網頁控制">網頁控制</div>
-    </div>
+ </div>
     <div class="cp-status" id="cpStatus">
       <span class="cp-mode-tag esp">ESP32</span>實體 BTN1/BTN2 主控
-    </div>
+ </div>
     <!-- Web control buttons (visible only in web mode) -->
     <div id="cpWebCtrl" style="display:none;flex-direction:column;gap:6px">
       <button class="dp-btn dp-btn-start" id="cpBtn1">BTN1 — 開機 / 開始校正</button>
@@ -1510,23 +1510,23 @@ END</div>
         <div class="dp-calib-bar" style="margin-bottom:4px"><div class="dp-calib-fill" id="cpCalibFill"></div></div>
         <div id="cpTimer" style="color:var(--text2)">等待操作...</div>
         <div style="margin-top:3px">校正時長 <span id="cpCalibSec">60</span>s</div>
-      </div>
-    </div>
+ </div>
+ </div>
     <div id="cpEspHints" style="font-family:var(--mono);font-size:.58rem;color:var(--text3);line-height:1.8;margin-top:2px">
       使用 ESP32 實體按鈕控制<br>
       BTN1 = 開機/校正/暫停繼續<br>
       BTN2 = 開始量測/停止<br>
       <span style="color:var(--text3)">切換「網頁控制」後可在此<br>操作按鈕，指令透過 BLE/USB 送出</span>
-    </div>
-  </div>
+ </div>
+ </div>
 </div>
 
 <!-- ==================== Demo 模擬面板 ==================== -->
 <div id="demoPanel" class="hidden">
   <div id="demoPanelHead">
-    <span class="dp-title">🎮 ESP32 模擬</span>
+    <span class="dp-title">ESP32 模擬</span>
     <button id="demoPanelClose">✕</button>
-  </div>
+ </div>
   <div id="demoPanelBody">
     <div class="dp-phase ph-idle" id="dpPhase">IDLE</div>
     <div class="dp-timer" id="dpTimer">等待操作...</div>
@@ -1542,8 +1542,8 @@ END</div>
       ③ BTN2 → 開始量測<br>
       ④ 量測中：BTN1=暫停 / BTN2=停止<br>
       <span style="color:var(--text3)">校正時長 <span id="dpCalibSec">60</span>s</span>
-    </div>
-  </div>
+ </div>
+ </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════
@@ -1556,95 +1556,130 @@ END</div>
     <div id="mpPhasePill" class="idle">IDLE</div>
     <button id="mpMaxBtn" title="最大化">⤢</button>
     <button id="mpToggleBtn" title="收合面板">▲</button>
-  </div>
+ </div>
   <div id="mpCalibBar"><div id="mpCalibFill"></div></div>
   <div id="mpBody">
     <div>
       <div id="mpTimer">00:00</div>
       <div id="mpTimerSub">等待開始</div>
-    </div>
+ </div>
     <div id="mpStats">
       <div class="mp-stat"><div class="mp-stat-val" id="mpBPM">--</div><div class="mp-stat-lbl">BPM</div></div>
       <div class="mp-stat" id="mpGsrStat">
         <div style="display:flex;align-items:center;justify-content:center;gap:4px">
           <div id="mpGsrDot" style="width:7px;height:7px;border-radius:50%;background:var(--text3);flex-shrink:0;transition:.3s"></div>
           <div class="mp-stat-val" id="mpGsrVal" style="font-size:.85rem">--</div>
-        </div>
+ </div>
         <div class="mp-stat-lbl">GSR</div>
-      </div>
+ </div>
       <div class="mp-stat"><div class="mp-stat-val" id="mpRPM">--</div><div class="mp-stat-lbl">RPM</div></div>
       <div class="mp-stat"><div class="mp-stat-val" id="mpScore" style="color:var(--green)">--</div><div class="mp-stat-lbl">壓力</div></div>
-    </div>
+ </div>
 
-    <!-- 校正期間即時基準值顯示（calibrating 時才出現）-->
-    <div id="mpCalibStats" style="display:none;background:rgba(240,180,41,.06);border:1px solid rgba(240,180,41,.25);border-radius:8px;padding:8px 10px">
-      <div style="font-family:var(--mono);font-size:.58rem;color:var(--yellow);margin-bottom:6px;letter-spacing:.5px">🔧 校正中累積基準值</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px">
-        <div style="text-align:center">
-          <div style="font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--hr)" id="mpCalibHR">--</div>
-          <div style="font-family:var(--mono);font-size:.54rem;color:var(--text3)">HR raw</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--gsr)" id="mpCalibGSR">--</div>
-          <div style="font-family:var(--mono);font-size:.54rem;color:var(--text3)">GSR raw</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--rr)" id="mpCalibResp">--</div>
-          <div style="font-family:var(--mono);font-size:.54rem;color:var(--text3)">Resp raw</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--hr)" id="mpCalibBPM">--</div>
-          <div style="font-family:var(--mono);font-size:.54rem;color:var(--text3)">基準 BPM</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--rr)" id="mpCalibRPM">--</div>
-          <div style="font-family:var(--mono);font-size:.54rem;color:var(--text3)">基準 RPM</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--text3)" id="mpCalibN">0 pts</div>
-          <div style="font-family:var(--mono);font-size:.54rem;color:var(--text3)">資料點</div>
-        </div>
-      </div>
-    </div>
+    <!-- 校正進行中 / 校正結果區塊 -->
+    <div id="mpCalibStats" style="display:none;border-radius:8px;padding:9px 11px;font-family:var(--mono)">
 
+      <!-- 校正中：即時累積值 -->
+      <div id="mpCalibLive">
+        <div style="font-size:.58rem;color:var(--yellow);margin-bottom:7px;letter-spacing:.5px;display:flex;align-items:center;gap:5px">
+          <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--yellow);animation:blink 1s infinite"></span>
+          校正中 — 即時累積基準值
+ </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">
+          <div style="background:rgba(255,255,255,.04);border-radius:5px;padding:6px 4px;text-align:center">
+            <div style="font-size:.88rem;font-weight:700;color:var(--hr)" id="mpCalibBPM">--</div>
+            <div style="font-size:.5rem;color:var(--text3);margin-top:1px">靜息 BPM</div>
+ </div>
+          <div style="background:rgba(255,255,255,.04);border-radius:5px;padding:6px 4px;text-align:center">
+            <div style="font-size:.88rem;font-weight:700;color:var(--rr)" id="mpCalibRPM">--</div>
+            <div style="font-size:.5rem;color:var(--text3);margin-top:1px">靜息 RPM</div>
+ </div>
+          <div style="background:rgba(255,255,255,.04);border-radius:5px;padding:6px 4px;text-align:center">
+            <div style="font-size:.88rem;font-weight:700;color:var(--gsr)" id="mpCalibGSR">--</div>
+            <div style="font-size:.5rem;color:var(--text3);margin-top:1px">GSR raw</div>
+ </div>
+          <div style="background:rgba(255,255,255,.04);border-radius:5px;padding:6px 4px;text-align:center">
+            <div style="font-size:.88rem;font-weight:700;color:var(--hr)" id="mpCalibHR">--</div>
+            <div style="font-size:.5rem;color:var(--text3);margin-top:1px">HR raw</div>
+ </div>
+          <div style="background:rgba(255,255,255,.04);border-radius:5px;padding:6px 4px;text-align:center">
+            <div style="font-size:.88rem;font-weight:700;color:var(--rr)" id="mpCalibResp">--</div>
+            <div style="font-size:.5rem;color:var(--text3);margin-top:1px">Resp raw</div>
+ </div>
+          <div style="background:rgba(255,255,255,.04);border-radius:5px;padding:6px 4px;text-align:center">
+            <div style="font-size:.88rem;font-weight:700;color:var(--text3)" id="mpCalibN">0</div>
+            <div style="font-size:.5rem;color:var(--text3);margin-top:1px">資料點</div>
+ </div>
+ </div>
+ </div>
+
+      <!-- 校正完成後：最終基準值摘要 -->
+      <div id="mpBaseResult" style="display:none">
+        <div style="font-size:.58rem;color:var(--green);margin-bottom:7px;letter-spacing:.5px">校正完成 — 基準值確認</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+          <div style="background:rgba(62,207,142,.07);border:1px solid rgba(62,207,142,.2);border-radius:5px;padding:7px 8px">
+            <div style="font-size:.52rem;color:var(--text3);margin-bottom:2px">靜息心率</div>
+            <div style="font-size:1.05rem;font-weight:700;color:var(--hr)" id="mpBaseBPM">--</div>
+            <div style="font-size:.48rem;color:var(--text3)">BPM</div>
+ </div>
+          <div style="background:rgba(62,207,142,.07);border:1px solid rgba(62,207,142,.2);border-radius:5px;padding:7px 8px">
+            <div style="font-size:.52rem;color:var(--text3);margin-bottom:2px">靜息呼吸率</div>
+            <div style="font-size:1.05rem;font-weight:700;color:var(--rr)" id="mpBaseRPM">--</div>
+            <div style="font-size:.48rem;color:var(--text3)">RPM</div>
+ </div>
+          <div style="background:rgba(62,207,142,.07);border:1px solid rgba(62,207,142,.2);border-radius:5px;padding:7px 8px">
+            <div style="font-size:.52rem;color:var(--text3);margin-bottom:2px">GSR 基準</div>
+            <div style="font-size:1.05rem;font-weight:700;color:var(--gsr)" id="mpBaseGSR">--</div>
+            <div style="font-size:.48rem;color:var(--text3)">ADC raw</div>
+ </div>
+          <div style="background:rgba(62,207,142,.07);border:1px solid rgba(62,207,142,.2);border-radius:5px;padding:7px 8px">
+            <div style="font-size:.52rem;color:var(--text3);margin-bottom:2px">校正點數</div>
+            <div style="font-size:1.05rem;font-weight:700;color:var(--text2)" id="mpBaseN">--</div>
+            <div style="font-size:.48rem;color:var(--text3)">pts</div>
+ </div>
+ </div>
+        <div id="mpBaseNote" style="font-size:.54rem;color:var(--text3);margin-top:6px;line-height:1.5;padding:5px 7px;background:rgba(255,255,255,.03);border-radius:4px"></div>
+ </div>
+
+ </div>
     <div id="mpScoreWrap">
       <div id="mpScoreBar"><div id="mpScoreFill"></div></div>
       <div id="mpScoreVal" style="color:var(--green)">0</div>
-    </div>
-    <button id="mpMainBtn" class="idle">▶ 開始校正</button>
+ </div>
+    <button id="mpMainBtn" class="idle">開始校正</button>
     <div id="mpSecRow" style="grid-template-columns:1fr">
-      <button class="mp-sec-btn" id="mpStopBtn"  disabled>⏹ 停止</button>
-    </div>
+      <button class="mp-sec-btn" id="mpStopBtn"  disabled>停止</button>
+ </div>
     <!-- 重新開始按鈕：有資料時才顯示 -->
-    <button id="mpResetBtn" style="display:none;width:100%;padding:8px;border-radius:8px;font-size:.75rem;font-weight:600;cursor:pointer;border:1px dashed rgba(155,127,232,.5);color:var(--purple);background:rgba(155,127,232,.06);font-family:var(--mono);transition:.15s" title="清除所有資料並重新開始量測">🔄 清除資料 · 重新量測</button>
+    <button id="mpResetBtn" style="display:none;width:100%;padding:8px;border-radius:8px;font-size:.75rem;font-weight:600;cursor:pointer;border:1px dashed rgba(155,127,232,.5);color:var(--purple);background:rgba(155,127,232,.06);font-family:var(--mono);transition:.15s" title="清除所有資料並重新開始量測"> 清除資料 · 重新量測</button>
     <div id="mpHint">選擇連線方式後按「開始校正」</div>
     <div id="mpConnRow">
       <div class="mp-conn-btn" id="mpBleBtn">BLE</div>
       <div class="mp-conn-btn" id="mpUsbBtn">USB</div>
       <div class="mp-conn-btn" id="mpDemoBtn">Demo</div>
-    </div>
+ </div>
     <div style="display:flex;gap:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.05)">
       <button id="mpCamBtn" style="flex:1;padding:7px;border-radius:6px;font-size:.7rem;font-weight:600;cursor:pointer;border:1px solid rgba(242,102,106,.5);color:var(--red);background:transparent;font-family:var(--mono)">鏡頭</button>
       <button id="mpCsvBtn" style="flex:1;padding:7px;border-radius:6px;font-size:.7rem;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.12);color:var(--text3);background:transparent;font-family:var(--mono)">CSV</button>
-    </div>
+ </div>
 
     <!-- ── 即時作圖（最大化後顯示）── -->
     <div id="mpChartSection">
       <div class="mp-mini-chart-wrap">
         <div class="mp-mini-chart-label" style="color:var(--hr)">Heart Rate — raw</div>
         <div class="mp-mini-canvas-wrap"><canvas id="mpCanvasHR"></canvas></div>
-      </div>
+ </div>
       <div class="mp-mini-chart-wrap">
         <div class="mp-mini-chart-label" style="color:var(--gsr)">GSR — raw</div>
         <div class="mp-mini-canvas-wrap"><canvas id="mpCanvasGSR"></canvas></div>
-      </div>
+ </div>
       <div class="mp-mini-chart-wrap">
         <div class="mp-mini-chart-label" style="color:var(--rr)">Respiration — raw</div>
         <div class="mp-mini-canvas-wrap"><canvas id="mpCanvasResp"></canvas></div>
-      </div>
-    </div>
+ </div>
+ </div>
 
-  </div>
+ </div>
 </div>
 
 <script>
@@ -1928,35 +1963,35 @@ function setPhaseUI(phase, customText) {
     calibrating: {
       badgeCls: 'ph-calib',  badgeTxt: 'CALIBRATING',
       dotColor: '#f0b429',   bannerBorder: 'rgba(240,180,41,.35)',
-      main: _isEN?'🔧 Calibrating — collecting resting baseline':'🔧 校正中 — ESP32 正在採集靜息基準值',
+      main: _isEN?'Calibrating — collecting resting baseline':'校正中 — ESP32 正在採集靜息基準值',
       sub:  _isEN?'BTN2 unlocks after calibration completes':'校正完成後 BTN2 解鎖，按下即可開始量測',
       timerCls: 'cal',
     },
     waiting_for_start: {
       badgeCls: 'ph-paused', badgeTxt: 'READY',
       dotColor: '#9b7fe8',   bannerBorder: 'rgba(155,127,232,.5)',
-      main: _isEN?'✅ Baseline ready — press BTN2 to start':'✅ 基準值採集完成 — 按 BTN2 開始量測',
+      main: _isEN?'Baseline ready — press BTN2 to start':'基準值採集完成 — 按 BTN2 開始量測',
       sub:  '',
       timerCls: '',
     },
     running: {
       badgeCls: 'ph-run',    badgeTxt: 'RUNNING',
       dotColor: '#f2666a',   bannerBorder: 'rgba(242,102,106,.35)',
-      main: _isEN?'📡 Measuring — receiving biometric data':'📡 量測中 — 正在接收生理數據',
+      main: _isEN?'量測中 — 正在接收生理數據':'量測中 — 正在接收生理數據',
       sub:  '',
       timerCls: 'rec',
     },
     paused: {
       badgeCls: 'ph-paused', badgeTxt: 'PAUSED',
       dotColor: '#9b7fe8',   bannerBorder: 'rgba(155,127,232,.35)',
-      main: _isEN?'⏸ Paused — data reception paused':'⏸ 暫停中 — 數據接收暫停',
+      main: _isEN?'Paused — data reception paused':'暫停中 — 數據接收暫停',
       sub:  '',
       timerCls: '',
     },
     ended: {
       badgeCls: 'ph-idle',   badgeTxt: 'ENDED',
       dotColor: '#3ecf8e',   bannerBorder: 'rgba(62,207,142,.25)',
-      main: _isEN?'✅ Session complete':'✅ 量測完成',
+      main: _isEN?'Session complete':'量測完成',
       sub:  _isEN?'Redirecting to Data Center...':'即將跳轉數據中心...',
       timerCls: '',
     },
@@ -1974,12 +2009,24 @@ function setPhaseUI(phase, customText) {
   if (ptext) ptext.textContent = c.main;
   document.getElementById('calibTime').textContent = CFG.calib + 's';
 
-  // ★ 校正基準值面板：只在校正期間顯示
+  // ★ 校正基準值面板
   const calibStatsEl = document.getElementById('mpCalibStats');
+  const calibLiveEl  = document.getElementById('mpCalibLive');
+  const baseResultEl = document.getElementById('mpBaseResult');
   if (calibStatsEl) {
-    calibStatsEl.style.display = (phase === 'calibrating') ? 'block' : 'none';
-    if (phase !== 'calibrating') {
-      // 量測開始後把 mpScore 恢復為數值顯示
+    const showPanel = (phase === 'calibrating' || phase === 'waiting_for_start');
+    calibStatsEl.style.display = showPanel ? 'block' : 'none';
+    if (showPanel) {
+      calibStatsEl.style.background = phase === 'calibrating'
+        ? 'rgba(240,180,41,.06)' : 'rgba(62,207,142,.06)';
+      calibStatsEl.style.border = phase === 'calibrating'
+        ? '1px solid rgba(240,180,41,.3)' : '1px solid rgba(62,207,142,.25)';
+    }
+    // 校正中：顯示即時進度；校正完成：顯示結果摘要
+    if (calibLiveEl)  calibLiveEl.style.display  = (phase === 'calibrating')       ? 'block' : 'none';
+    if (baseResultEl) baseResultEl.style.display = (phase === 'waiting_for_start') ? 'block' : 'none';
+    if (phase === 'running' || phase === 'paused' || phase === 'idle' || phase === 'ended') {
+      calibStatsEl.style.display = 'none';
       const mpSc = document.getElementById('mpScore');
       if (mpSc && mpSc.textContent === '校正中') mpSc.textContent = '--';
     }
@@ -2166,8 +2213,21 @@ function ingestPacket(raw) {
     S.base.gsr  = parseFloat(p[1]);
     S.base.hr   = parseFloat(p[2]);
     S.base.resp = parseFloat(p[3]);
+
+    // ★ 從前端累積的 calibBuf 帶入 BPM / RPM 基準值
+    if (S.calibBuf) {
+      const avg = arr => (Array.isArray(arr) && arr.length) ? arr.reduce((a,b)=>a+b,0)/arr.length : null;
+      const bpm = avg(S.calibBuf.bpm);
+      const rpm = avg(S.calibBuf.rpm);
+      if (bpm != null) S.base.bpm  = bpm;
+      if (rpm != null) S.base.rpm  = rpm;
+    }
+
     updateBaselineUI();
-    // ★ 更新主畫面狀態為「等待 BTN2 開始量測」
+
+    // ★ 校正完成後在主控面板顯示完整基準值結果
+    _mpShowBaselineResult();
+
     setPhaseUI('waiting_for_start');
     return;
   }
@@ -2254,7 +2314,7 @@ function ingestPacket(raw) {
         }
 
         // ── 即時計算並顯示累積基準值（每筆都算一次滾動平均）
-        const avg = arr => arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : null;
+        const avg = arr => (Array.isArray(arr) && arr.length) ? arr.reduce((a,b)=>a+b,0)/arr.length : null;
         const liveHR   = avg(S.calibBuf.hr);
         const liveGSR  = avg(S.calibBuf.gsr);
         const liveResp = avg(S.calibBuf.resp);
@@ -2342,8 +2402,42 @@ function updateBaselineUI() {
   document.getElementById('s_hr_base').textContent  = b.hr   != null ? b.hr.toFixed(1)   : '--';
   document.getElementById('s_gsr_base').textContent = b.gsr  != null ? b.gsr.toFixed(1)  : '--';
   document.getElementById('s_rr_base').textContent  = b.resp != null ? b.resp.toFixed(1)  : '--';
-  // mark calib end for chart background
   S.calibEndSec = CFG.calib;
+}
+
+// ★ 校正完成後在主控面板顯示最終基準值
+function _mpShowBaselineResult() {
+  const b   = S.base;
+  const buf = S.calibBuf || {};
+  const n   = (buf.hr || []).length;
+
+  const ss = (id, val, dec) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = (val != null && !isNaN(val)) ? Number(val).toFixed(dec) : '--';
+  };
+
+  // 最終基準值格子
+  ss('mpBaseBPM',  b.bpm,  1);
+  ss('mpBaseRPM',  b.rpm,  1);
+  ss('mpBaseGSR',  b.gsr,  0);
+  ss('mpBaseN',    n,      0);
+
+  // 同步更新主統計格（BPM/RPM）
+  const mpBPM = document.getElementById('mpBPM');
+  const mpRPM = document.getElementById('mpRPM');
+  const mpSc  = document.getElementById('mpScore');
+  if (mpBPM) mpBPM.textContent = b.bpm != null ? b.bpm.toFixed(1) : '--';
+  if (mpRPM) mpRPM.textContent = b.rpm != null ? b.rpm.toFixed(1) : '--';
+  if (mpSc)  mpSc.textContent  = '--';
+
+  // 備註：告知算法使用此基準值
+  const noteEl = document.getElementById('mpBaseNote');
+  if (noteEl) {
+    const bpmNote = b.bpm  != null ? `靜息 BPM ${b.bpm.toFixed(1)}` : '未偵測到 BPM（請確認心率感測器）';
+    const rpmNote = b.rpm  != null ? `靜息 RPM ${b.rpm.toFixed(1)}` : '未偵測到 RPM（請確認呼吸感測器）';
+    noteEl.innerHTML = `壓力演算法將以此為基準：<br>${bpmNote} · ${rpmNote} · GSR ${b.gsr != null ? b.gsr.toFixed(0) : '--'}`;
+  }
 }
 
 // ============================================================
@@ -2491,7 +2585,7 @@ document.getElementById('btnBleScan').addEventListener('click', async () => {
     document.getElementById('bleModal').classList.remove('show');
     // 連線成功 → 顯示「等待 ESP32 狀態」，不做任何其他動作
     // 等待 ESP32 onConnect 發送的 STATUS,xxx 封包來同步狀態
-    document.getElementById('statusMainText').textContent = '✅ BLE 已連線 — 等待 ESP32 狀態同步...';
+    document.getElementById('statusMainText').textContent = 'BLE 已連線 — 等待 ESP32 狀態同步...';
     document.getElementById('statusSubText').textContent  = '';
     device.addEventListener('gattserverdisconnected', () => {
       S.connected = false; S.connMode = null; setBleUI(false);
@@ -2546,7 +2640,7 @@ document.getElementById('btnUsb').addEventListener('click', async () => {
     setUsbUI(true);
     document.getElementById('btnUsb').textContent = 'USB 中斷';
     // 連線成功 → 顯示等待狀態，不做任何其他動作
-    document.getElementById('statusMainText').textContent = '✅ USB 已連線 — 等待 ESP32 狀態同步...';
+    document.getElementById('statusMainText').textContent = 'USB 已連線 — 等待 ESP32 狀態同步...';
     document.getElementById('statusSubText').textContent  = '';
 
     // Start read loop
@@ -2665,7 +2759,7 @@ function cpUpdatePanel() {
   } else if (_ctrlState === 'waiting_for_start') {
     btn1.textContent = 'BTN1 — 強制停止 / 關機';
     btn1.className   = 'dp-btn dp-btn-stop';
-    btn2.textContent = '▶ BTN2 — 開始量測';
+    btn2.textContent = 'BTN2 — 開始量測';
     btn2.className   = 'dp-btn dp-btn-start';
     btn2.disabled    = false;
     if (tmr) tmr.textContent = '基準值就緒，按 BTN2 開始';
@@ -2711,7 +2805,7 @@ function setCtrlMode(mode) {
     webCtrl.style.display = 'flex';
     espHints.style.display = 'none';
     statusTag.innerHTML = '<span class="cp-mode-tag web">網頁</span>網頁 UI 送指令至 ESP32';
-    if (hints) hints.innerHTML = '<span style="color:var(--purple)">🎛 網頁控制中 — BTN1/BTN2 由此操作</span>';
+    if (hints) hints.innerHTML = '<span style="color:var(--purple)">網頁控制中 — BTN1/BTN2 由此操作</span>';
     document.getElementById('cpCalibSec').textContent = CFG.calib;
     cpSyncStateFromPhase();
   } else {
@@ -2853,11 +2947,11 @@ let _hasBaselineSim = false;
 //
 //  狀態                BTN1                      BTN2
 //  ──────────────────────────────────────────────────────────
-//  idle                ✅ 開機/開始校正           🔘 disabled (灰)
-//  calibrating         🔴 強制停止/關機           🔘 disabled (灰)
-//  waiting_for_start   🔴 強制停止/關機           ✅ 開始量測 (綠)
-//  running             🟡 暫停                   🔴 停止量測
-//  paused              🟢 繼續                   🔴 停止量測
+//  idle                開機/開始校正              disabled (灰)
+//  calibrating         強制停止/關機              disabled (灰)
+//  waiting_for_start   強制停止/關機              開始量測 (綠)
+//  running             暫停                      停止量測
+//  paused              繼續                      停止量測
 // ─────────────────────────────────────────────────────────────
 function dpUpdatePanel() {
   const ph   = document.getElementById('dpPhase');
@@ -2889,10 +2983,10 @@ function dpUpdatePanel() {
     tmr.textContent  = `校正中 ${_calibSec}/${CFG.calib}s`;
 
   } else if (_demoState === 'waiting_for_start') {
-    ph.classList.add('ph-paused'); ph.textContent = '✅ 校正完成';
+    ph.classList.add('ph-paused'); ph.textContent = '校正完成';
     btn1.textContent = 'BTN1 — 強制停止 / 關機';
     btn1.className   = 'dp-btn dp-btn-stop';
-    btn2.textContent = '▶ BTN2 — 開始量測';
+    btn2.textContent = 'BTN2 — 開始量測';
     btn2.className   = 'dp-btn dp-btn-start';
     btn2.disabled    = false;
     tmr.textContent  = '基準值就緒，按 BTN2 開始';
@@ -3214,7 +3308,7 @@ function buildReport() {
     `<div style="background:#f8f9ff;border:1px solid #e8eaf0;border-radius:4px;padding:6px 8px;text-align:center">
       <div style="font-size:.54rem;color:#999;font-family:'IBM Plex Mono',monospace;margin-bottom:3px">${lbl}</div>
       <div style="font-size:1.2rem;font-weight:700;color:${col};font-family:'IBM Plex Mono',monospace">${val}</div>
-    </div>`
+ </div>`
   ).join('');
 
   // ── Stress events table ───────────────────────────────────
@@ -3245,7 +3339,7 @@ function buildReport() {
         <th style="padding:5px 6px;text-align:left">Peak</th>
         <th style="padding:5px 6px;text-align:left">平均</th>
         <th style="padding:5px 6px;text-align:left">評估</th>
-      </tr></thead>
+ </tr></thead>
       <tbody>${events.map((e,i) => {
         const dur = (e.end - e.start).toFixed(0);
         const [level, color] = e.peak >= 80 ? ['高度緊張','#c0392b'] : ['中度緊張','#d68910'];
@@ -3257,9 +3351,9 @@ function buildReport() {
           <td style="padding:5px 6px;font-weight:700;color:${color}">${e.peak.toFixed(1)}</td>
           <td style="padding:5px 6px">${e.avg.toFixed(1)}</td>
           <td style="padding:5px 6px;color:${color};font-weight:600">${level}</td>
-        </tr>`;
+ </tr>`;
       }).join('')}</tbody>
-    </table>`;
+ </table>`;
   }
 
   // ── Charts ────────────────────────────────────────────────
@@ -3400,7 +3494,7 @@ const I18N = {
     lbl_rawlog: '原始數據紀錄',
     // Sub-tabs
     tab_summary: '概覽', tab_advanced: '進階分析',
-    tab_compare: '數據比較', tab_report: '📄 報告',
+    tab_compare: '數據比較', tab_report: '報告',
     // Analysis
     lbl_baseline_title: '靜息基準值（由 ESP32 校正後傳送）',
     lbl_stress_full: '全程緊張指數 / Full-Session Stress Index',
@@ -3418,11 +3512,11 @@ const I18N = {
     mc_cur_bpm: 'current BPM', mc_base_avg: 'baseline avg',
     mc_cur_rpm: 'current RPM',
     // Buttons
-    btn_print: '🖨 列印 / 儲存 PDF',
+    btn_print: '列印 / 儲存 PDF',
     // Master panel
-    mp_start_calib: '▶  開始校正', mp_stop_calib: '⏹  中止校正',
-    mp_start_meas: '▶  開始量測', mp_pause: '⏸  暫停量測',
-    mp_resume: '▶  繼續量測', mp_stop: '⏹  停止',
+    mp_start_calib: '開始校正', mp_stop_calib: '中止校正',
+    mp_start_meas: '開始量測', mp_pause: '暫停量測',
+    mp_resume: '繼續量測', mp_stop: '停止',
     mp_waiting: '等待開始', mp_calib_timing: '校正計時',
     mp_wait_start: '等待開始量測', mp_meas_timing: '量測計時',
     mp_paused_lbl: '暫停中',
@@ -3435,17 +3529,17 @@ const I18N = {
     pb_timeline_hint: '緊張事件時間軸 — 點擊紅色標記跳轉至對應時段',
     pb_events_hint: '緊張事件（Score ≥ 60）— 點擊直接跳轉：',
     pb_no_events: '無緊張事件',
-    pb_offset_hint: '💡 影片從量測開始的時刻對齊緊張指數時間軸。若錄影比量測更早開始，系統已自動計算偏移量。',
+    pb_offset_hint: '影片從量測開始的時刻對齊緊張指數時間軸。若錄影比量測更早開始，系統已自動計算偏移量。',
     // Connection
     ble_connected: 'BLE 已連線', ble_disconnected: 'BLE 未連線',
     usb_connected: 'USB 已連線', usb_disconnected: 'USB 未連線',
     // Status phases
     status_idle: '閒置中 — 等待 ESP32 操作',
-    status_calib: '🔧 校正中 — ESP32 正在採集靜息基準值',
-    status_wait_start: '✅ 基準值採集完成 — 按 BTN2 開始量測',
-    status_running: '📡 量測中 — 正在接收生理數據',
-    status_paused: '⏸ 暫停中 — 數據接收暫停',
-    status_ended: '✅ 量測完成',
+    status_calib: '校正中 — ESP32 正在採集靜息基準值',
+    status_wait_start: '基準值採集完成 — 按 BTN2 開始量測',
+    status_running: '量測中 — 正在接收生理數據',
+    status_paused: '暫停中 — 數據接收暫停',
+    status_ended: '量測完成',
     // Camera
     cam_recording: '錄製中', cam_has_rec: '有錄影', cam_no_rec: '未錄製',
     cam_btn_stop: '停止錄製', cam_btn_view: '查看回放', cam_btn_start: '鏡頭',
@@ -3463,7 +3557,7 @@ const I18N = {
     lbl_stress_title: 'Current Stress Index (computed by ESP32)',
     lbl_rawlog: 'Raw Data Log',
     tab_summary: 'Summary', tab_advanced: 'Advanced',
-    tab_compare: 'Compare', tab_report: '📄 Report',
+    tab_compare: 'Compare', tab_report: 'Report',
     lbl_baseline_title: 'Resting Baseline (from ESP32 calibration)',
     lbl_stress_full: 'Full-Session Stress Index',
     lbl_stress_src: 'Source: ESP32 real-time | Red dashed = threshold 60',
@@ -3477,10 +3571,10 @@ const I18N = {
     mc_hr: 'Heart Rate', mc_gsr: 'GSR', mc_resp: 'Respiration',
     mc_cur_bpm: 'current BPM', mc_base_avg: 'baseline avg',
     mc_cur_rpm: 'current RPM',
-    btn_print: '🖨 Print / Save PDF',
-    mp_start_calib: '▶  Start Calibration', mp_stop_calib: '⏹  Abort Calibration',
-    mp_start_meas: '▶  Start Measurement', mp_pause: '⏸  Pause',
-    mp_resume: '▶  Resume', mp_stop: '⏹  Stop',
+    btn_print: 'Print / Save PDF',
+    mp_start_calib: 'Start Calibration', mp_stop_calib: 'Abort Calibration',
+    mp_start_meas: 'Start Measurement', mp_pause: 'Pause',
+    mp_resume: 'Resume', mp_stop: '  Stop',
     mp_waiting: 'Waiting', mp_calib_timing: 'Calibrating',
     mp_wait_start: 'Ready to measure', mp_meas_timing: 'Measuring',
     mp_paused_lbl: 'Paused',
@@ -3492,15 +3586,15 @@ const I18N = {
     pb_timeline_hint: 'Stress timeline — click red markers to jump',
     pb_events_hint: 'Stress events (Score ≥ 60) — click to jump:',
     pb_no_events: 'No stress events',
-    pb_offset_hint: '💡 Video aligns to measurement start. Offset is auto-calculated if recording started earlier.',
+    pb_offset_hint: 'Video aligns to measurement start. Offset is auto-calculated if recording started earlier.',
     ble_connected: 'BLE Connected', ble_disconnected: 'BLE Disconnected',
     usb_connected: 'USB Connected', usb_disconnected: 'USB Disconnected',
     status_idle: 'Idle — awaiting ESP32 operation',
-    status_calib: '🔧 Calibrating — collecting baseline',
-    status_wait_start: '✅ Baseline ready — press BTN2 to start',
-    status_running: '📡 Recording — receiving biometric data',
-    status_paused: '⏸ Paused — data reception paused',
-    status_ended: '✅ Session complete',
+    status_calib: 'Calibrating — collecting baseline',
+    status_wait_start: 'Baseline ready — press BTN2 to start',
+    status_running: 'Recording — receiving biometric data',
+    status_paused: 'Paused — data reception paused',
+    status_ended: 'Session complete',
     cam_recording: 'Recording', cam_has_rec: 'Has recording', cam_no_rec: 'No recording',
     cam_btn_stop: 'Stop Recording', cam_btn_view: 'View Playback', cam_btn_start: 'Camera',
   }
@@ -3599,7 +3693,7 @@ function applyLang() {
 
 document.getElementById('btnLang').addEventListener('click', () => {
   _lang = _lang === 'zh' ? 'en' : 'zh';
-  document.getElementById('btnLang').textContent = _lang === 'zh' ? '🌐 EN' : '🌐 中文';
+  document.getElementById('btnLang').textContent = _lang === 'zh' ? 'EN' : '中文';
   applyLang();
 });
 
@@ -3739,7 +3833,7 @@ function refreshAdvanced() {
 
   // hint
   const hint = document.getElementById('advZoomHint');
-  if (hint) hint.textContent = '💡 滾輪縮放 · 拖拉平移時間軸';
+  if (hint) hint.textContent = '滾輪縮放 · 拖拉平移時間軸';
 
   // stats table
   const tbody = document.getElementById('advStatsBody');
@@ -3849,7 +3943,7 @@ function cmpStatsRow(set, idx, colors) {
     <td>${avg('hr').toFixed(1)}</td>
     <td>${avg('gsr').toFixed(1)}</td>
     <td>${avg('resp').toFixed(1)}</td>
-  </tr>`;
+ </tr>`;
 }
 
 function auxLineDatasets(key, colors) {
@@ -4266,11 +4360,11 @@ function openPlayback(dataTimeSec) {
       label.textContent=`#${idx+1} — ${ev.start.toFixed(1)}s → ${ev.end.toFixed(1)}s | peak: ${ev.peak.toFixed(0)}`;
       const jumpBtn=document.createElement('button');
       jumpBtn.className='btn';jumpBtn.style.fontSize='.65rem';jumpBtn.style.padding='3px 8px';
-      jumpBtn.textContent='▶ 跳轉';
+      jumpBtn.textContent=' 跳轉';
       jumpBtn.addEventListener('click',()=>jumpTo(ev.start));
       const dlBtn=document.createElement('button');
       dlBtn.className='btn btn-success';dlBtn.style.fontSize='.65rem';dlBtn.style.padding='3px 8px';
-      dlBtn.textContent='⬇ 下載';
+      dlBtn.textContent=' 下載';
       dlBtn.addEventListener('click',async()=>{
         dlBtn.disabled=true; dlBtn.textContent='處理中...';
         try {
@@ -4289,7 +4383,7 @@ function openPlayback(dataTimeSec) {
         } catch(e) {
           alert('片段截取失敗，請改用全段下載：'+e.message);
         } finally {
-          dlBtn.disabled=false; dlBtn.textContent='⬇ 下載';
+          dlBtn.disabled=false; dlBtn.textContent=' 下載';
         }
       });
       row.appendChild(label);row.appendChild(jumpBtn);row.appendChild(dlBtn);
@@ -4397,11 +4491,11 @@ function mpUpdate() {
   if(pill) pill.textContent = {idle:'IDLE',calibrating:'CALIBRATING',waiting_for_start:'READY',running:'RUNNING',paused:'PAUSED',ended:'ENDED'}[s]||'IDLE';
 
   const btnCfg = {
-    idle:              {cls:'idle',    txt: typeof t==='function'?t('mp_start_calib'):'▶  開始校正',  dis:!connected},
-    calibrating:       {cls:'calib',   txt: typeof t==='function'?t('mp_stop_calib'):'⏹  中止校正',  dis:false},
-    waiting_for_start: {cls:'ready',   txt: typeof t==='function'?t('mp_start_meas'):'▶  開始量測',  dis:false},
-    running:           {cls:'running', txt: typeof t==='function'?t('mp_pause'):'⏸  暫停量測',  dis:false},
-    paused:            {cls:'paused',  txt: typeof t==='function'?t('mp_resume'):'▶  繼續量測',  dis:false},
+    idle:              {cls:'idle',    txt: typeof t==='function'?t('mp_start_calib'):'開始校正',  dis:!connected},
+    calibrating:       {cls:'calib',   txt: typeof t==='function'?t('mp_stop_calib'):'中止校正',  dis:false},
+    waiting_for_start: {cls:'ready',   txt: typeof t==='function'?t('mp_start_meas'):'開始量測',  dis:false},
+    running:           {cls:'running', txt: typeof t==='function'?t('mp_pause'):'暫停量測',  dis:false},
+    paused:            {cls:'paused',  txt: typeof t==='function'?t('mp_resume'):'繼續量測',  dis:false},
   };
   const bc = btnCfg[s] || btnCfg.idle;
   mainBtn.className = bc.cls;
@@ -4409,7 +4503,7 @@ function mpUpdate() {
   mainBtn.disabled = bc.dis;
 
   const active = (s==='running'||s==='paused');
-  if(stopBtn)  { stopBtn.disabled=!(active||s==='waiting_for_start'); stopBtn.textContent = typeof t==='function'?t('mp_stop'):'⏹  停止'; }
+  if(stopBtn)  { stopBtn.disabled=!(active||s==='waiting_for_start'); stopBtn.textContent = typeof t==='function'?t('mp_stop'):'停止'; }
 
   // 重置按鈕：有量測資料時顯示（idle 或 waiting_for_start 且有舊資料）
   const resetBtn = document.getElementById('mpResetBtn');
@@ -4423,9 +4517,9 @@ function mpUpdate() {
   const hints = {
     idle:              connected ? (_isEN ? 'Press Start Calibration to collect resting baseline ('+CFG.calib+'s)' : '按「開始校正」採集靜息基準值（'+CFG.calib+'秒）') : (_isEN?'Please select a connection method':'請先選擇連線方式'),
     calibrating:       (_isEN?'Stay relaxed... collecting baseline ':'靜坐放鬆，正在採集基準值... ')+_mp.calibSec+'/'+CFG.calib+'s',
-    waiting_for_start: _isEN?'Baseline ready ✓  Press Start Measurement':'基準值就緒 ✓  按「開始量測」正式記錄',
-    running:           _isEN?'Measuring — press ⏸ Pause or ⏹ Stop':'量測中 — 按「⏸」暫停或「⏹」停止',
-    paused:            _isEN?'Paused — press ▶ Resume or ⏹ Stop':'已暫停 — 按「▶」繼續或「⏹」停止',
+    waiting_for_start: _isEN?'Baseline ready - Press Start Measurement':'基準值就緒，按「開始量測」正式記錄',
+    running:           _isEN?'Measuring — press  Pause or  Stop':'量測中 — 按「」暫停或「」停止',
+    paused:            _isEN?'Paused — press  Resume or  Stop':'已暫停 — 按「」繼續或「」停止',
   };
   if(hint) hint.textContent = hints[s] || '';
   const timerSubTxt = {
@@ -4520,7 +4614,14 @@ function mpDoCalib() {
   mpUpdate();
 }
 function mpDoStart() {
-  if(_mp.mode==='demo') _demoStartMeasure(); else deviceWrite('START');
+  if (_mp.mode === 'demo') {
+    _demoStartMeasure();
+  } else {
+    deviceWrite('START');
+    // Optimistic local update — don't wait for ESP32 STATUS,RUNNING
+    // enterRunning() guards against double-init if ESP32 also echoes STATUS,RUNNING
+    enterRunning();
+  }
 }
 function mpDoPause() {
   if(_mp.mode==='demo'){_mp.state='paused';ingestPacket('STATUS,PAUSED');}
@@ -4680,8 +4781,15 @@ function _demoStartCalib() {
     _demoCalibSec++;
     if(_demoCalibSec>=CFG.calib){
       clearInterval(_demoCalibInterval); _hasBaselineSim=true;
-      S.calibBuf={hr:[],gsr:[],resp:[]};
-      for(let i=0;i<CFG.calib;i++){const n=()=>(Math.random()-.5)*40;S.calibBuf.hr.push(Math.round(2000+n()));S.calibBuf.gsr.push(Math.round(1800+n()));S.calibBuf.resp.push(Math.round(1500+n()));}
+      S.calibBuf={hr:[],gsr:[],resp:[],bpm:[],rpm:[]};
+      for(let i=0;i<CFG.calib;i++){
+        const n=()=>(Math.random()-.5)*40,nb=()=>(Math.random()-.5)*3,nr=()=>(Math.random()-.5)*1.5;
+        S.calibBuf.hr.push(Math.round(2000+n()));
+        S.calibBuf.gsr.push(Math.round(1800+n()));
+        S.calibBuf.resp.push(Math.round(1500+n()));
+        S.calibBuf.bpm.push(parseFloat((72+nb()).toFixed(1)));
+        S.calibBuf.rpm.push(parseFloat((14+nr()).toFixed(1)));
+      }
       ingestPacket('BASELINE,1800,2000,1500');
     }
   },1000);
@@ -4957,7 +5065,7 @@ window.mpUpdateStats = function(bpm, rpm, score) {
 })();
 
 // ============================================================
-// 🎬 回放頁面 — IndexedDB 保存最近 5 次錄影
+//  回放頁面 — IndexedDB 保存最近 5 次錄影
 // ============================================================
 const PB_DB_NAME    = 'BioMonitorRecordings';
 const PB_DB_VERSION = 1;
@@ -5098,7 +5206,7 @@ function pbOpenPlayer(record, jumpToSec) {
   video.src = url;
   video.load();
 
-  title.textContent = `🎬 ${record.meta.startDT}`;
+  title.textContent = ` ${record.meta.startDT}`;
   wrap.style.display = 'block';
   wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -5166,13 +5274,13 @@ function pbOpenPlayer(record, jumpToSec) {
     const jBtn = document.createElement('button');
     jBtn.className = 'btn';
     jBtn.style.cssText = 'font-size:.63rem;padding:3px 8px';
-    jBtn.textContent = '▶ 跳轉';
+    jBtn.textContent = ' 跳轉';
     jBtn.addEventListener('click', () => jumpTo(ev.start));
 
     const dBtn = document.createElement('button');
     dBtn.className = 'btn';
     dBtn.style.cssText = 'font-size:.63rem;padding:3px 8px;border-color:var(--green);color:var(--green)';
-    dBtn.textContent = '⬇ 下載片段';
+    dBtn.textContent = ' 下載片段';
     dBtn.addEventListener('click', async () => {
       dBtn.disabled = true; dBtn.textContent = '處理中...';
       try {
@@ -5188,7 +5296,7 @@ function pbOpenPlayer(record, jumpToSec) {
         document.body.appendChild(a); a.click();
         setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(a.href); }, 300);
       } catch(e) { alert('下載失敗: ' + e.message); }
-      finally { dBtn.disabled = false; dBtn.textContent = '⬇ 下載片段'; }
+      finally { dBtn.disabled = false; dBtn.textContent = ' 下載片段'; }
     });
 
     row.appendChild(lbl); row.appendChild(jBtn); row.appendChild(dBtn);
@@ -5264,7 +5372,7 @@ async function pbRenderHistory() {
         const btn = document.getElementById('pbCurrentSaveBtn');
         if (btn) { btn.disabled = true; btn.textContent = '儲存中...'; }
         await pbAutoSave();
-        if (btn) { btn.textContent = '✅ 已儲存'; }
+        if (btn) { btn.textContent = '已儲存'; }
         await pbRenderHistory();
       }, { once: true });
     }
@@ -5291,13 +5399,13 @@ async function pbRenderHistory() {
         <div style="font-family:var(--mono);font-size:.72rem;font-weight:700;color:var(--text)">#${records.length - idx}  ${rec.meta.startDT}</div>
         <div style="font-family:var(--mono);font-size:.6rem;color:var(--text3);margin-top:2px">
           時長: ${pbFmtDur(rec.meta.duration||0)}  ·  平均壓力: ${rec.meta.avgScore}  ·  最高: ${rec.meta.peakScore}  ·  緊張事件: ${(rec.events||[]).length} 次
-        </div>
-      </div>
+ </div>
+ </div>
       <div style="display:flex;gap:6px;flex-shrink:0">
-        <button class="btn pb-play-btn" style="font-size:.65rem;padding:3px 9px;border-color:var(--green);color:var(--green)">▶ 播放</button>
-        <button class="btn pb-dl-btn"   style="font-size:.65rem;padding:3px 9px">⬇ 下載</button>
-        <button class="btn pb-del-btn"  style="font-size:.65rem;padding:3px 9px;border-color:var(--red);color:var(--red)">🗑</button>
-      </div>`;
+        <button class="btn pb-play-btn" style="font-size:.65rem;padding:3px 9px;border-color:var(--green);color:var(--green)">播放</button>
+        <button class="btn pb-dl-btn"   style="font-size:.65rem;padding:3px 9px">下載</button>
+        <button class="btn pb-del-btn"  style="font-size:.65rem;padding:3px 9px;border-color:var(--red);color:var(--red)">[X]</button>
+ </div>`;
 
     // 緊張時刻晶片
     const evRow = document.createElement('div');
